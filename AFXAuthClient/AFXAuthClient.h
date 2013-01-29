@@ -41,7 +41,7 @@
 ///-----------------------------------
 
 /**
- 
+
  */
 @property (copy, nonatomic, readonly) AFXAuthToken *token;
 
@@ -50,7 +50,7 @@
 ///---------------------
 
 /**
- 
+
  */
 - (id)initWithBaseURL:(NSURL *)url key:(NSString *)key secret:(NSString *)secret;
 
@@ -60,41 +60,41 @@
 
 
 /**
- 
+
  */
 - (void)authorizeUsingXAuthWithAccessTokenPath:(NSString *)accessTokenPath
-                                   accessMethod:(NSString *)accessMethod
+                                  accessMethod:(NSString *)accessMethod
                                       username:(NSString *)username
                                       password:(NSString *)password
-                                        success:(void (^)(AFXAuthToken *accessToken))success
-                                        failure:(void (^)(NSError *error))failure;
+                                       success:(void (^)(AFXAuthToken *accessToken))success
+                                       failure:(void (^)(NSError *error))failure;
 
 @end
 
 #pragma mark -
 
 /**
- 
+
  */
 @interface AFXAuthToken : NSObject
 
 /**
- 
+
  */
 @property (readonly, nonatomic, copy) NSString *key;
 
 /**
- 
+
  */
 @property (readonly, nonatomic, copy) NSString *secret;
 
 /**
- 
+
  */
 - (id)initWithQueryString:(NSString *)queryString;
 
 /**
- 
+
  */
 - (id)initWithKey:(NSString *)key
            secret:(NSString *)secret;
