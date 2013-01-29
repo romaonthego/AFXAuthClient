@@ -15,6 +15,9 @@ AFXAuthClient *client = [[AFXAuthClient alloc] initWithBaseURL:[NSURL URLWithStr
                                       password:@"YOUR TUMBLR PASSWORD"
                                        success:^(AFXAuthToken *accessToken) {
                                            NSLog(@"Success = %@", accessToken);
+                                           
+                                           // Now let's request profile information
+                                           //
                                            NSMutableURLRequest *request = [client requestWithMethod:@"POST" path:@"/v2/user/info" parameters:nil];
                                            AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
                                                NSLog(@"Info: %@", JSON);
