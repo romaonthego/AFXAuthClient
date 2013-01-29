@@ -6,8 +6,8 @@ Here's the sample code that works with Tumblr XAuth:
 
 ``` objective-c
 AFXAuthClient *client = [[AFXAuthClient alloc] initWithBaseURL:[NSURL URLWithString:@"https://api.tumblr.com"]
-                                                                       key:@"YOUR TUMBLR CONSUMER KEY"
-                                                                    secret:@"YOUR TUMBLR CONSUMER SECRET"];
+                                                                                key:@"YOUR TUMBLR CONSUMER KEY"
+                                                                             secret:@"YOUR TUMBLR CONSUMER SECRET"];
 
 [client authorizeUsingXAuthWithAccessTokenPath:@"/oauth/access_token"
                                   accessMethod:@"POST"
