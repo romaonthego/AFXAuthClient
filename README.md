@@ -1,5 +1,7 @@
 # AFXAuthClient
 
+[AFNetworking](https://github.com/AFNetworking/AFNetworking) Extension for XAuth Authentication.
+
 ## Example 
 
 Here's the sample code that works with Tumblr XAuth:
