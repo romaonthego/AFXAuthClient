@@ -5,7 +5,7 @@ Pod::Spec.new do |s|
   s.homepage     = 'https://github.com/romaonthego/AFXAuthClient'
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.authors      = { 'Roman Efimov' => 'romefimov@gmail.com', 'Mattt Thompson' => 'm@mattt.me', 'Eric Johnson' => 'eric@semisecretsoftware.com' }
-  s.source       = { :git => 'https://github.com/romaonthego/AFXAuthClient', :tag => '1.0'}
+  s.source       = { :git => 'https://github.com/romaonthego/AFXAuthClient.git', :tag => '1.0'}
   s.source_files = 'AFXAuthClient'
   s.requires_arc = true
 
