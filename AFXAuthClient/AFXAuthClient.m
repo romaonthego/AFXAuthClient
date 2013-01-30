@@ -154,8 +154,6 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
     if (self.token)
         params = [params arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@%%3D%@", @"oauth_token", AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(self.token.key, NSUTF8StringEncoding)], nil]];
     
-    NSLog(@"params = %@", params);
-    
     params = [params sortedArrayUsingSelector:@selector(compare:)];
     NSString *baseString = [@[request.HTTPMethod,
                             AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(request.URL.absoluteString, NSUTF8StringEncoding),
