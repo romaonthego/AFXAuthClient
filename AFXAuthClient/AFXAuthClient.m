@@ -148,11 +148,14 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
     
     for (NSString *key in parameters) {
         NSString *param = AFPercentEscapedQueryStringPairMemberFromStringWithEncoding([parameters objectForKey:key], NSUTF8StringEncoding);
+        //if ([key isEqualToString:@"data"])
         param = AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(param, NSUTF8StringEncoding);
+        
         params = [params arrayByAddingObjectsFromArray:@[[NSString stringWithFormat:@"%@%%3D%@", key, param]]];
     }
     if (self.token)
         params = [params arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@%%3D%@", @"oauth_token", AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(self.token.key, NSUTF8StringEncoding)], nil]];
+    
     
     params = [params sortedArrayUsingSelector:@selector(compare:)];
     NSString *baseString = [@[request.HTTPMethod,
@@ -208,6 +211,20 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
     [self enqueueHTTPRequestOperation:operation];
 }
 
+- (NSMutableDictionary *)authorizationHeaderWithRequest:(NSURLRequest *)request parameters:(NSDictionary *)parameters
+{
+    NSMutableDictionary *authorizationHeader = [[NSMutableDictionary alloc] initWithDictionary:@{@"oauth_nonce": _nonce,
+                                                @"oauth_signature_method": @"HMAC-SHA1",
+                                                @"oauth_timestamp": _timestamp,
+                                                @"oauth_consumer_key": self.consumerKey,
+                                                @"oauth_signature": AFHMACSHA1Signature([self baseStringWithRequest:request parameters:parameters], _consumerSecret, _token.secret),
+                                                @"oauth_version": @"1.0"}];
+    if (self.token)
+        [authorizationHeader setObject:AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(self.token.key, NSUTF8StringEncoding) forKey:@"oauth_token"];
+    
+    return authorizationHeader;
+}
+
 #pragma mark - AFHTTPClient
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString *)method
@@ -215,18 +232,23 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
                                 parameters:(NSDictionary *)parameters
 {
     _nonce = [NSString stringWithFormat:@"%d", arc4random()];
-    _timestamp = [NSString stringWithFormat:@"%d", (int)ceil((float)[[NSDate date] timeIntervalSince1970])];//  [//[NSString stringWithFormat:@"%d", (int)(((float)([[NSDate date] timeIntervalSince1970])) + 0.5 + arc4random()%10)];
+    _timestamp = [NSString stringWithFormat:@"%d", (int)ceil((float)[[NSDate date] timeIntervalSince1970])];
     
     NSMutableURLRequest *request = [super requestWithMethod:method path:path parameters:parameters];
-    NSMutableDictionary *authorizationHeader = [[NSMutableDictionary alloc] initWithDictionary:@{@"oauth_nonce": _nonce,
-                                                                                      @"oauth_signature_method": @"HMAC-SHA1",
-                                                                                      @"oauth_timestamp": _timestamp,
-                                                                                      @"oauth_consumer_key": self.consumerKey,
-                                                                                      @"oauth_signature": AFHMACSHA1Signature([self baseStringWithRequest:request parameters:parameters], _consumerSecret, _token.secret),
-                                                                                      @"oauth_version": @"1.0"}];
+    NSMutableDictionary *authorizationHeader = [self authorizationHeaderWithRequest:request parameters:parameters];
     
-    if (self.token)
-        [authorizationHeader setObject:AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(self.token.key, NSUTF8StringEncoding) forKey:@"oauth_token"];
+    [request setValue:[self authorizationHeaderForParameters:authorizationHeader] forHTTPHeaderField:@"Authorization"];
+    [request setHTTPShouldHandleCookies:NO];
+    return request;
+}
+
+- (NSMutableURLRequest *)multipartFormRequestWithMethod:(NSString *)method path:(NSString *)path parameters:(NSDictionary *)parameters constructingBodyWithBlock:(void (^)(id<AFMultipartFormData>))block
+{
+    _nonce = [NSString stringWithFormat:@"%d", arc4random()];
+    _timestamp = [NSString stringWithFormat:@"%d", (int)ceil((float)[[NSDate date] timeIntervalSince1970])];
+    
+    NSMutableURLRequest *request = [super multipartFormRequestWithMethod:method path:path parameters:parameters constructingBodyWithBlock:block];
+    NSMutableDictionary *authorizationHeader = [self authorizationHeaderWithRequest:request parameters:parameters];
     
     [request setValue:[self authorizationHeaderForParameters:authorizationHeader] forHTTPHeaderField:@"Authorization"];
     [request setHTTPShouldHandleCookies:NO];
