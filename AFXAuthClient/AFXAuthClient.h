@@ -43,7 +43,7 @@
 /**
 
  */
-@property (strong, readonly) AFXAuthToken *token;
+@property (strong, nonatomic) AFXAuthToken *token;
 
 ///---------------------
 /// @name Initialization
