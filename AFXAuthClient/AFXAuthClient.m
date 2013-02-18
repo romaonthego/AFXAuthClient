@@ -159,7 +159,7 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
     
     params = [params sortedArrayUsingSelector:@selector(compare:)];
     NSString *baseString = [@[request.HTTPMethod,
-                            AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(request.URL.absoluteString, NSUTF8StringEncoding),
+                            AFPercentEscapedQueryStringPairMemberFromStringWithEncoding([[request.URL.absoluteString componentsSeparatedByString:@"?"] objectAtIndex:0], NSUTF8StringEncoding),
                             [params componentsJoinedByString:@"%26"]] componentsJoinedByString:@"&"];
     return baseString;
 }
