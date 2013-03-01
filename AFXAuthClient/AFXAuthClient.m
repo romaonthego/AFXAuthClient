@@ -61,10 +61,13 @@ static NSString * AFEncodeBase64WithData(NSData *data)
     return [[NSString alloc] initWithData:mutableData encoding:NSASCIIStringEncoding];
 }
 
-static NSString * AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(NSString *string, NSStringEncoding encoding)
+static NSString * RFC3986EscapedStringWithEncoding(NSString *string, NSStringEncoding encoding)
 {
-    static NSString * const kAFCharactersToBeEscaped = @":/?&=;+!@#$()~";
-    static NSString * const kAFCharactersToLeaveUnescaped = @"[].";
+	// Escape per RFC 3986 standards as required by OAuth. Previously, not
+	// escaping asterisks (*) causes passwords with * to fail in
+	// Instapaper authentication
+	static NSString * const kAFCharactersToBeEscaped = @":/?#[]@!$&'()*+,;=";
+    static NSString * const kAFCharactersToLeaveUnescaped = @"-._~";
     
 	return (__bridge_transfer  NSString *)CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, (__bridge CFStringRef)string, (__bridge CFStringRef)kAFCharactersToLeaveUnescaped, (__bridge CFStringRef)kAFCharactersToBeEscaped, CFStringConvertNSStringEncodingToEncoding(encoding));
 }
@@ -134,11 +137,11 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
 
 - (NSString *)baseStringWithRequest:(NSURLRequest *)request parameters:(NSDictionary *)parameters
 {
-    NSString *oauth_consumer_key = AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(self.consumerKey, NSUTF8StringEncoding);
-    NSString *oauth_nonce = AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(_nonce, NSUTF8StringEncoding);
-    NSString *oauth_signature_method = AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(@"HMAC-SHA1", NSUTF8StringEncoding);
-    NSString *oauth_timestamp = AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(_timestamp, NSUTF8StringEncoding);
-    NSString *oauth_version = AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(@"1.0", NSUTF8StringEncoding);
+    NSString *oauth_consumer_key = RFC3986EscapedStringWithEncoding(self.consumerKey, NSUTF8StringEncoding);
+    NSString *oauth_nonce = RFC3986EscapedStringWithEncoding(_nonce, NSUTF8StringEncoding);
+    NSString *oauth_signature_method = RFC3986EscapedStringWithEncoding(@"HMAC-SHA1", NSUTF8StringEncoding);
+    NSString *oauth_timestamp = RFC3986EscapedStringWithEncoding(_timestamp, NSUTF8StringEncoding);
+    NSString *oauth_version = RFC3986EscapedStringWithEncoding(@"1.0", NSUTF8StringEncoding);
     
     NSArray *params = @[[NSString stringWithFormat:@"%@%%3D%@", @"oauth_consumer_key", oauth_consumer_key],
                         [NSString stringWithFormat:@"%@%%3D%@", @"oauth_nonce", oauth_nonce],
@@ -147,19 +150,19 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
                         [NSString stringWithFormat:@"%@%%3D%@", @"oauth_version", oauth_version]];
     
     for (NSString *key in parameters) {
-        NSString *param = AFPercentEscapedQueryStringPairMemberFromStringWithEncoding([parameters objectForKey:key], NSUTF8StringEncoding);
+        NSString *param = RFC3986EscapedStringWithEncoding([parameters objectForKey:key], NSUTF8StringEncoding);
         //if ([key isEqualToString:@"data"])
-        param = AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(param, NSUTF8StringEncoding);
+        param = RFC3986EscapedStringWithEncoding(param, NSUTF8StringEncoding);
         
         params = [params arrayByAddingObjectsFromArray:@[[NSString stringWithFormat:@"%@%%3D%@", key, param]]];
     }
     if (self.token)
-        params = [params arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@%%3D%@", @"oauth_token", AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(self.token.key, NSUTF8StringEncoding)], nil]];
+        params = [params arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:[NSString stringWithFormat:@"%@%%3D%@", @"oauth_token", RFC3986EscapedStringWithEncoding(self.token.key, NSUTF8StringEncoding)], nil]];
     
     
     params = [params sortedArrayUsingSelector:@selector(compare:)];
     NSString *baseString = [@[request.HTTPMethod,
-                            AFPercentEscapedQueryStringPairMemberFromStringWithEncoding([[request.URL.absoluteString componentsSeparatedByString:@"?"] objectAtIndex:0], NSUTF8StringEncoding),
+                            RFC3986EscapedStringWithEncoding([[request.URL.absoluteString componentsSeparatedByString:@"?"] objectAtIndex:0], NSUTF8StringEncoding),
                             [params componentsJoinedByString:@"%26"]] componentsJoinedByString:@"&"];
     return baseString;
 }
@@ -220,7 +223,7 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
                                                 @"oauth_signature": AFHMACSHA1Signature([self baseStringWithRequest:request parameters:parameters], _consumerSecret, _token.secret),
                                                 @"oauth_version": @"1.0"}];
     if (self.token)
-        [authorizationHeader setObject:AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(self.token.key, NSUTF8StringEncoding) forKey:@"oauth_token"];
+        [authorizationHeader setObject:RFC3986EscapedStringWithEncoding(self.token.key, NSUTF8StringEncoding) forKey:@"oauth_token"];
     
     return authorizationHeader;
 }
