@@ -2,6 +2,12 @@
 
 [AFNetworking](https://github.com/AFNetworking/AFNetworking) Extension for XAuth Authentication.
 
+## Requirements
+* Xcode 4.5 or higher
+* Apple LLVM compiler
+* iOS 5.0 or higher / Mac OS X 10.7 or higher
+* ARC
+
 ## Installation
 
 ### CocoaPods
