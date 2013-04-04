@@ -4,7 +4,7 @@
 ###### Bug fixes
 
 * Fixed bug where passwords with certain special characters (eg. asterisks) fail
-in certain services such as Instapaper. [#2](https://github.com/romaonthego/AFXAuthClient/issues/1)
+in certain services such as Instapaper. [#2](https://github.com/romaonthego/AFXAuthClient/issues/2)
 
 ## 1.0.4
 [AFXAuthClient](https://github.com/romaonthego/AFXAuthClient/compare/1.0.3...1.0.4)
@@ -36,4 +36,4 @@ in certain services such as Instapaper. [#2](https://github.com/romaonthego/AFXA
 
 ## 1.0
 
-Initial commit.
+Initial release.
