@@ -298,12 +298,14 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
 
 #pragma mark - NSCoding
 
-- (void)encodeWithCoder:(NSCoder *)coder {
+- (void)encodeWithCoder:(NSCoder *)coder
+{
     [coder encodeObject:self.key forKey:@"AFXAuthClientKey"];
     [coder encodeObject:self.secret forKey:@"AFXAuthClientSecret"];
 }
 
-- (id)initWithCoder:(NSCoder *)coder {
+- (id)initWithCoder:(NSCoder *)coder
+{
     self = [super initWithCoder:coder];
     
     if (self) {

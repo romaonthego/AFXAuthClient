@@ -28,7 +28,7 @@ in certain services such as Instapaper. [#2](https://github.com/romaonthego/AFXA
 * Added support for multi part data requests.
 
 ## 1.0.1
-[AFXAuthClient](https://github.com/romaonthego/AFXAuthClient/compare/1.0...1.0.1)
+[View diff](https://github.com/romaonthego/AFXAuthClient/compare/1.0...1.0.1)
 
 ###### Bug fixes
 
