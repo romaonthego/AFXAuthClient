@@ -76,7 +76,7 @@
 /**
 
  */
-@interface AFXAuthToken : NSObject
+@interface AFXAuthToken : NSObject <NSCoding>
 
 /**
 
@@ -98,5 +98,19 @@
  */
 - (id)initWithKey:(NSString *)key
            secret:(NSString *)secret;
+
+#pragma mark - NSCoding
+
+/**
+ 
+ */
+
+- (void)encodeWithCoder:(NSCoder *)coder;
+
+/**
+ 
+ */
+- (id)initWithCoder:(NSCoder *)coder;
+
 
 @end

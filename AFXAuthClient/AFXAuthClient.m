@@ -296,4 +296,20 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
     return self;
 }
 
+#pragma mark - NSCoding
+
+- (void)encodeWithCoder:(NSCoder *)coder {
+    [coder encodeObject:self.key forKey:@"AFXAuthClientKey"];
+    [coder encodeObject:self.secret forKey:@"AFXAuthClientSecret"];
+}
+
+- (id)initWithCoder:(NSCoder *)coder {
+    self = [super initWithCoder:coder];
+    
+    if (self) {
+        self.key = [coder decodeObjectForKey:@"AFXAuthClientKey"];
+        self.secret = [coder decodeObjectForKey:@"AFXAuthClientSecret"];
+    }
+}
+
 @end
