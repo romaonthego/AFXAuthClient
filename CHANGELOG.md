@@ -1,3 +1,10 @@
+## 1.0.6
+[AFXAuthClient](https://github.com/romaonthego/AFXAuthClient/compare/1.0.5...1.0.6)
+
+###### Enhancements
+
+* Added NSCoding support to AFXAuthToken.
+
 ## 1.0.5
 [AFXAuthClient](https://github.com/romaonthego/AFXAuthClient/compare/1.0.4...1.0.5)
 
