@@ -306,13 +306,13 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
 
 - (id)initWithCoder:(NSCoder *)coder
 {
-    self = [super initWithCoder:coder];
-    
+    self = [super init];
+
     if (self) {
         self.key = [coder decodeObjectForKey:@"AFXAuthClientKey"];
         self.secret = [coder decodeObjectForKey:@"AFXAuthClientSecret"];
     }
-    
+
     return self;
 }
 
