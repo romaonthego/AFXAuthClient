@@ -310,6 +310,8 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
         self.key = [coder decodeObjectForKey:@"AFXAuthClientKey"];
         self.secret = [coder decodeObjectForKey:@"AFXAuthClientSecret"];
     }
+    
+    return self;
 }
 
 @end
