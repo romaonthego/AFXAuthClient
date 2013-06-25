@@ -3,7 +3,7 @@
 
 ###### Bug fixes
 
-* Validate the input to `RFC3986EscapedStringWithEncoding()`, so that it does not return nil. [#1](https://github.com/romaonthego/AFXAuthClient/issues/6)
+* Validate the input to `RFC3986EscapedStringWithEncoding()`, so that it does not return nil. [#6](https://github.com/romaonthego/AFXAuthClient/issues/6)
 
 ## 1.0.6
 [AFXAuthClient](https://github.com/romaonthego/AFXAuthClient/compare/1.0.5...1.0.6)
