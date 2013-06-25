@@ -63,6 +63,9 @@ static NSString * AFEncodeBase64WithData(NSData *data)
 
 static NSString * RFC3986EscapedStringWithEncoding(NSString *string, NSStringEncoding encoding)
 {
+	// Validate the input string to ensure we dont return nil.
+	string = string ?: @"";
+	
 	// Escape per RFC 3986 standards as required by OAuth. Previously, not
 	// escaping asterisks (*) causes passwords with * to fail in
 	// Instapaper authentication
