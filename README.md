@@ -33,7 +33,7 @@ $ edit Podfile
 Edit your Podfile and add AFXAuthClient:
 
 ``` bash
-pod 'AFXAuthClient', '~> 1.0.8'
+pod 'AFXAuthClient', '~> 1.1'
 ```
 
 Install into your Xcode project:
