@@ -193,10 +193,21 @@ static inline NSString * AFHMACSHA1Signature(NSString *baseString, NSString *con
                                        success:(void (^)(AFXAuthToken *accessToken))success
                                        failure:(void (^)(NSError *error))failure
 {
+    [self authorizeUsingXAuthWithAccessTokenPath:accessTokenPath accessMethod:accessMethod mode:AFXAuthModeClient username:username password:password success:success failure:failure];
+}
+
+-(void)authorizeUsingXAuthWithAccessTokenPath:(NSString *)accessTokenPath
+                                 accessMethod:(NSString *)accessMethod
+                                         mode:(NSString *)mode
+                                     username:(NSString *)username
+                                     password:(NSString *)password
+                                      success:(void (^)(AFXAuthToken *))success
+                                      failure:(void (^)(NSError *))failure
+{
     _username = username;
     _password = password;
 
-    NSDictionary *parameters = @{@"x_auth_mode": @"client_auth",
+    NSDictionary *parameters = @{@"x_auth_mode": mode,
                                  @"x_auth_password": self.password,
                                  @"x_auth_username": self.username};
 
