@@ -31,6 +31,10 @@
 
 @class AFXAuthToken;
 
+static NSString* AFXAuthModeClient= @"client_auth";
+static NSString* AFXAuthModeAnon= @"anon_auth";
+static NSString* AFXAuthModeReverse= @"reverse_auth";
+
 @interface AFXAuthClient : AFHTTPClient {
     NSString *_nonce;
     NSString *_timestamp;
@@ -60,7 +64,7 @@
 
 
 /**
-
+ Authorize user using x_auth_mode = client_auth
  */
 - (void)authorizeUsingXAuthWithAccessTokenPath:(NSString *)accessTokenPath
                                   accessMethod:(NSString *)accessMethod
@@ -68,6 +72,18 @@
                                       password:(NSString *)password
                                        success:(void (^)(AFXAuthToken *accessToken))success
                                        failure:(void (^)(NSError *error))failure;
+
+/**
+ Authorize user using any x_auth_mode 
+ */
+- (void)authorizeUsingXAuthWithAccessTokenPath:(NSString *)accessTokenPath
+                                  accessMethod:(NSString *)accessMethod
+                                          mode:(NSString *)mode
+                                      username:(NSString *)username
+                                      password:(NSString *)password
+                                       success:(void (^)(AFXAuthToken *accessToken))success
+                                       failure:(void (^)(NSError *error))failure;
+
 
 @end
 
