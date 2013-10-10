@@ -32,6 +32,10 @@
 
 #import <CommonCrypto/CommonHMAC.h>
 
+NSString *const AFXAuthModeClient = @"client_auth";
+NSString *const AFXAuthModeAnon = @"anon_auth";
+NSString *const AFXAuthModeReverse = @"reverse_auth";
+
 static NSString * AFEncodeBase64WithData(NSData *data)
 {
     NSUInteger length = [data length];

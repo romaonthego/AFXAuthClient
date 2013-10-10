@@ -31,9 +31,9 @@
 
 @class AFXAuthToken;
 
-static NSString* AFXAuthModeClient= @"client_auth";
-static NSString* AFXAuthModeAnon= @"anon_auth";
-static NSString* AFXAuthModeReverse= @"reverse_auth";
+extern NSString *const AFXAuthModeClient;
+extern NSString *const AFXAuthModeAnon;
+extern NSString *const AFXAuthModeReverse;
 
 @interface AFXAuthClient : AFHTTPClient {
     NSString *_nonce;
